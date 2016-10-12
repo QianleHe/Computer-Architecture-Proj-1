@@ -60,8 +60,13 @@ module EXE(
     //We need to read from MEM (passed to MEM)
     output reg MemRead1_OUT,
     //We need to write to MEM (passed to MEM)
-    output reg MemWrite1_OUT
+    output reg MemWrite1_OUT,
     
+    // added
+    input [1:0] ForwardA,
+    input [1:0] ForwardB,
+    input [31:0] RegWrite_EXEMEM,
+    input [31:0] RegWrite_MEMWB
     );
 	 
 
@@ -72,8 +77,8 @@ module EXE(
 	 wire comment1;
 	 assign comment1 = 1;
 	 
-assign A1 = OperandA1_IN;
-assign B1 = OperandB1_IN;
+assign A1 = ((ForwardA == 2'b10)? RegWrite_MEMWB : ((ForwardA == 2'b01)? RegWrite_EXEMEM:OperandA1_IN));
+assign B1 = ((ForwardB == 2'b01)? RegWrite_MEMWB : ((ForwardB == 2'b10)? RegWrite_EXEMEM:OperandB1_IN));
 
 reg [31:0] HI/*verilator public*/;
 reg [31:0] LO/*verilator public*/;

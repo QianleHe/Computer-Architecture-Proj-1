@@ -188,9 +188,44 @@ module MIPS (
 		.RegWrite1_OUT(RegWrite1_EXEMEM),
 		.ALU_Control1_OUT(ALU_Control1_EXEMEM),
 		.MemRead1_OUT(MemRead1_EXEMEM),
-		.MemWrite1_OUT(MemWrite1_EXEMEM)
+		.MemWrite1_OUT(MemWrite1_EXEMEM),
+
+
+        //added 
+        .ForwardA(ForwardA),
+        .ForwardB(ForwardB),
+        .RegWrite_EXEMEM(ALU_result1_EXEMEM),
+        .RegWrite_MEMWB(WriteData1_MEMWB)
 	);
 	
+
+    // new added
+    // for the forwardunit part
+    wire [4:0] ID_EXrs;
+    wire [4:0] ID_EXrt;
+    wire [4:0] EX_MEMrd;
+    //wire [4:0] MEM_WBrd;
+    wire [1:0] ForwardA;
+    wire [1:0] ForwardB;
+    
+
+    assign ID_EXrs = Instr1_IDEXE[25:21];
+    assign ID_EXrt = Instr1_IDEXE[20:16];
+    assign EX_MEMrd = Instr1_EXEMEM[15:11];
+    //assign MEM_WBrd = ;
+
+    ForwardUnit ForwardUnit(
+        .EX_MEMrd(EX_MEMrd), 
+        .MEM_WBrd(WriteRegister1_MEMWB),
+        .ID_EXrs(ID_EXrs),
+        .ID_EXrt(ID_EXrt),
+        .RegWrite_EXMEM(RegWrite1_EXEMEM),
+        .RegWrite_MEMWB(RegWrite1_MEMWB),
+        .ForwardA(ForwardA), // do not realized
+        .ForwardB(ForwardB) // do not realized
+    );
+    /////////////////////////////////////////////////////
+
      
     wire [31:0] data_write_2DC/*verilator public*/;
     wire [31:0] data_address_2DC/*verilator public*/;
