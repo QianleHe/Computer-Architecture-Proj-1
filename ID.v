@@ -71,7 +71,14 @@ module ID(
 	 //Tell the simulator to process a system call
 	 output reg SYS,
 	 //Tell fetch to stop advancing the PC, and wait.
-	 output WANT_FREEZE
+	 output WANT_FREEZE,
+
+	 // forwarding part added 
+	 // added
+    input [1:0] ForwardA,
+    //input [1:0] ForwardB,
+    input [31:0] RegWrite_EXEMEM,
+    input [31:0] RegWrite_MEMWB
     );
 	 
 	 wire [5:0]	ALU_control1;	//async. ALU_Control output
@@ -126,8 +133,8 @@ module ID(
 //Begin branch/jump calculation
 	
 	wire [31:0] rsval_jump1;
-	
-    assign rsval_jump1 = rsRawVal1;
+	// I think when it needs a branch and jump, I think it needs a forward judgement.
+    assign rsval_jump1 = ((ForwardA == 2'b10)? RegWrite_MEMWB : ((ForwardA == 2'b01)? RegWrite_EXEMEM:rsRawVal1));
 
 NextInstructionCalculator NIA1 (
     .Instr_PC_Plus4(Instr_PC_Plus4_IN),

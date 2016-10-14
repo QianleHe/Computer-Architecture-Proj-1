@@ -153,7 +153,14 @@ module MIPS (
 		.MemWrite1_OUT(MemWrite1_IDEXE),
 		.ShiftAmount1_OUT(ShiftAmount1_IDEXE),
 		.SYS(SYS),
-		.WANT_FREEZE(STALL_IDIF)
+		.WANT_FREEZE(STALL_IDIF),
+
+        //added
+        //added 
+        .ForwardA(ForwardA),
+        //.ForwardB(ForwardB),
+        .RegWrite_EXEMEM(Instr1_EXEMEM),
+        .RegWrite_MEMWB(WriteData1_MEMWB)
 	);
 	
 	wire [31:0] Instr1_EXEMEM;
@@ -194,7 +201,7 @@ module MIPS (
         //added 
         .ForwardA(ForwardA),
         .ForwardB(ForwardB),
-        .RegWrite_EXEMEM(ALU_result1_EXEMEM),
+        .RegWrite_EXEMEM(Instr1_EXEMEM),
         .RegWrite_MEMWB(WriteData1_MEMWB)
 	);
 	

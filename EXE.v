@@ -107,7 +107,8 @@ ALU ALU1(
 
 wire [31:0] MemWriteData1;
 
-assign MemWriteData1 = MemWriteData1_IN;
+//assign MemWriteData1 = MemWriteData1_IN;
+assign MemWriteData1 =(ForwardB == 2'b01) ? RegWrite_EXEMEM:(ForwardB == 2'b10)?RegWrite_MEMWB:MemWriteData1_IN;
 
 always @(posedge CLK or negedge RESET) begin
 	if(!RESET) begin

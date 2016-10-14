@@ -84,7 +84,7 @@ always @(posedge CLK or negedge RESET) begin
     end else begin
         /*You might want to process the writebacks*/
         //Write1?Reg[WriteReg1]=WriteData1;
-        if (Write1 == 1) 
+        if (Write1) 
         	begin
         		Reg[WriteReg1] <= WriteData1;
         	end
